@@ -1,0 +1,61 @@
+# Coronavirus #
+background no
+disable_auto_reload false
+total_run_times 0
+update_interval 2
+no_buffers true
+cpu_avg_samples 2
+short_units true
+top_name_width 25
+alignment tl
+double_buffer true
+gap_x 75
+gap_y 130
+minimum_height 200
+minimum_width 590
+maximum_width 590
+own_window yes
+own_window_argb_value 128
+own_window_argb_visual true
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+own_window_transparent false
+own_window_type desktop
+xftfont Open Sans Light:size=10
+override_utf8_locale true
+uppercase false
+use_xft true
+xftalpha 1
+default_color ffffff
+color1 707070
+draw_borders false
+border_width 32
+draw_outline false
+default_outline_color 828282
+draw_shades false
+default_shade_color 000000
+draw_graph_borders true
+show_graph_range false
+show_graph_scale false
+
+TEXT
+${font :size=24}${execi 86400 uname -n}${font}
+
+Ubuntu ${execi 86400 lsb_release -r | cut -f 2}${tab 140}Kernel ${execi 86400 uname -r | sed -e s/-generic//}
+${execi 86400 cat /sys/devices/virtual/dmi/id/product_name | sed -e s/,/./}${tab 140}BIOS ${execi 86400 cat /sys/class/dmi/id/bios_version | cut -d' ' -f 2 | sed s/\(//}
+Sistema encendido ${uptime_short}
+
+${font :size=13:bold}Coronavirus:${font}
+Mundo: ${texeci 60 curl -s https://corona.lmao.ninja/v2/all | jq -r .cases} casos, ${texeci 60 curl -s https://corona.lmao.ninja/v2/all | jq -r .deaths} muertes
+USA: ${texeci 60 curl -s https://corona.lmao.ninja/v2/countries/us | jq -r .cases} casos, ${texeci 60 curl -s https://corona.lmao.ninja/v2/countries/us | jq -r .deaths} muertes
+México: ${texeci 60 curl -s https://corona.lmao.ninja/v2/countries/mx | jq -r .cases} casos, ${texeci 60 curl -s https://corona.lmao.ninja/v2/countries/mx | jq -r .deaths} muertess
+
+${execi 86400 cat /proc/cpuinfo | grep -m 1 "model name" | sed -e $'s/\t/\ /g' | cut -d' ' -f4-8 | sed -e s/\(TM\)// -e s/\(R\)//g -e s/CPU\ // -e s/@//}${tab 140}${cpubar cpu0}
+Batería${tab 75}${battery_percent BAT0}%${tab 140}${battery_bar 6 BAT0}${color}
+RAM${tab 75}${mem}${tab 140}${membar 6}
+/${tab 75}${fs_size /} ${fs_type /}${tab 140}${fs_bar 6 /}
+/home${tab 75}${fs_size /home} ${fs_type /home}${tab 140}${fs_bar 6 /home}
+/swap${tab 75}${swapmax} ${fs_type /dev/nvme0n1p2}${tab 140}${swapbar 6}
+/efi${tab 75}${fs_size /boot/efi} ${fs_type /boot/efi}${tab 140}${fs_bar 6 /boot/efi}
+
+${color1}${downspeedgraph wlp2s0 60,260 ffffff ffffff -l}${alignr}${upspeedgraph wlp2s0 60,260 ffffff ffffff -l}${color}
+Net Down ${downspeed wlp2s0}${alignr}Net Up ${upspeed wlp2s0}
