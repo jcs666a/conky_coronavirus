@@ -11,8 +11,6 @@ alignment tl
 double_buffer true
 gap_x 75
 gap_y 130
-minimum_height 200
-minimum_width 590
 maximum_width 590
 own_window yes
 own_window_argb_value 128
@@ -45,17 +43,15 @@ ${execi 86400 cat /sys/devices/virtual/dmi/id/product_name | sed -e s/,/./}${tab
 Sistema encendido ${uptime_short}
 
 ${font :size=13:bold}Coronavirus:${font}
-Mundo: ${texeci 60 curl -s https://corona.lmao.ninja/v2/all | jq -r .cases} casos, ${texeci 60 curl -s https://corona.lmao.ninja/v2/all | jq -r .deaths} muertes
-USA: ${texeci 60 curl -s https://corona.lmao.ninja/v2/countries/us | jq -r .cases} casos, ${texeci 60 curl -s https://corona.lmao.ninja/v2/countries/us | jq -r .deaths} muertes
-México: ${texeci 60 curl -s https://corona.lmao.ninja/v2/countries/mx | jq -r .cases} casos, ${texeci 60 curl -s https://corona.lmao.ninja/v2/countries/mx | jq -r .deaths} muertess
+Mundo: ${texeci 60 curl -s https://corona.lmao.ninja/v2/all | jq -r .cases | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'} casos, ${texeci 60 curl -s https://corona.lmao.ninja/v2/all | jq -r .deaths | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'} muertes
+USA: ${texeci 60 curl -s https://corona.lmao.ninja/v2/countries/us | jq -r .cases | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'} casos, ${texeci 60 curl -s https://corona.lmao.ninja/v2/countries/us | jq -r .deaths | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'} muertes
+México: ${texeci 60 curl -s https://corona.lmao.ninja/v2/countries/mx | jq -r .cases | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'} casos, ${texeci 60 curl -s https://corona.lmao.ninja/v2/countries/mx | jq -r .deaths | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'} muertess
 
-${execi 86400 cat /proc/cpuinfo | grep -m 1 "model name" | sed -e $'s/\t/\ /g' | cut -d' ' -f4-8 | sed -e s/\(TM\)// -e s/\(R\)//g -e s/CPU\ // -e s/@//}${tab 140}${cpubar cpu0}
+${execi 86400 cat /proc/cpuinfo | grep -m 1 "model name" | sed -e $'s/\t/\ /g' | cut -d' ' -f4-8 | sed -e s/\(TM\)// -e s/\(R\)//g -e s/CPU\ // -e s/@//}${tab 75}${hwmon 0 temp 1}°C${tab 140}${cpubar cpu0}
 Batería${tab 75}${battery_percent BAT0}%${tab 140}${battery_bar 6 BAT0}${color}
 RAM${tab 75}${mem}${tab 140}${membar 6}
 /${tab 75}${fs_size /} ${fs_type /}${tab 140}${fs_bar 6 /}
-/home${tab 75}${fs_size /home} ${fs_type /home}${tab 140}${fs_bar 6 /home}
-/swap${tab 75}${swapmax} ${fs_type /dev/nvme0n1p2}${tab 140}${swapbar 6}
-/efi${tab 75}${fs_size /boot/efi} ${fs_type /boot/efi}${tab 140}${fs_bar 6 /boot/efi}
+/html${tab 75}${fs_size /media/html} ${fs_type /media/html}${tab 140}${fs_bar 6 /media/html}
 
 ${color1}${downspeedgraph wlp2s0 60,260 ffffff ffffff -l}${alignr}${upspeedgraph wlp2s0 60,260 ffffff ffffff -l}${color}
 Net Down ${downspeed wlp2s0}${alignr}Net Up ${upspeed wlp2s0}
